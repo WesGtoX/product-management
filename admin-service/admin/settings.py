@@ -66,7 +66,14 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 # Database
 DATABASES = {
-    'default': config('DATABASE_URL', default='sqlite:///' + BASE_DIR.child('db.sqlite3'), cast=db_url)
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config('DATABASE_NAME', default='admin'),
+        'USER': config('DATABASE_USER', default='root'),
+        'PASSWORD': config('DATABASE_PASSWORD', default='root'),
+        'HOST': config('DATABASE_HOST', default='db'),
+        'PORT': config('DATABASE_PORT', default='3306'),
+    }
 }
 
 # Password validation
@@ -97,5 +104,3 @@ STATIC_URL = '/static/'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-BROKER_URL = config('BROKER_URL', default='')

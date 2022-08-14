@@ -6,6 +6,11 @@ from decouple import config
 from unipath import Path
 from dj_database_url import parse as db_url
 
+import logging
+import logging.config
+
+logging.config.fileConfig(os.path.join('logging.conf'))
+
 BASE_DIR = Path(__file__).parent
 
 SECRET_KEY = config('SECRET_KEY', default='ARANDOMSECRETKEY')

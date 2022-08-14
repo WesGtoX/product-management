@@ -19,6 +19,7 @@ services:
       context: .
       dockerfile: Dockerfile
     command: python consumer.py
+    restart: on-failure
     depends_on:
       - db
 
@@ -31,5 +32,7 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+    restart: on-failure
     depends_on:
       - db
+      - queue

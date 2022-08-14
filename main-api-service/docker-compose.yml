@@ -19,6 +19,9 @@ services:
       context: .
       dockerfile: Dockerfile
     command: python consumer.py
+    environment:
+      FLASK_APP: main
+    restart: on-failure
     depends_on:
       - db
 
@@ -29,10 +32,11 @@ services:
     command: python main.py
     environment:
       FLASK_APP: main
-      DATABASE_URL: 'mysql://root:root@0.0.0.0:33067/main?charset=utf8'
     ports:
       - "8001:5000"
     volumes:
       - .:/app
+    restart: on-failure
     depends_on:
       - db
+      - queue

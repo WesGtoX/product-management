@@ -5,6 +5,7 @@
 
 <p align="center">
   <a href="#about-the-project">About</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="#technology">Technology</a>&nbsp;&nbsp;|&nbsp;&nbsp;
   <a href="#roadmap">Roadmap</a>&nbsp;&nbsp;|&nbsp;&nbsp;
   <a href="#how-to-contribute">Contributing</a>&nbsp;&nbsp;|&nbsp;&nbsp;
   <a href="#license">License</a>
@@ -21,7 +22,21 @@
 
 ## About the Project
 
-[...]
+Product management created as microservices using Python, Django, Flask on the [Back-end](https://github.com/WesGtoX/product-management) and React on the [Front-end](https://github.com/WesGtoX/product-management-app).
+
+
+## Technology 
+
+This project was developed with the following technologies:
+
+- [Python](https://www.python.org/)
+- [Django](https://www.djangoproject.com/)
+- [Django REST Framework](https://www.django-rest-framework.org/)
+- [Flask](https://flask.palletsprojects.com/)
+- [SQLAlchemy](https://www.sqlalchemy.org/)
+- [RabbitMQ](https://www.rabbitmq.com/)
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
 
 ## Roadmap

@@ -1,6 +1,5 @@
 import os
 
-import logging
 import logging.config
 
 from dataclasses import dataclass
@@ -12,6 +11,7 @@ from flask_migrate import Migrate
 
 import requests
 from sqlalchemy import UniqueConstraint
+from sqlalchemy.exc import SQLAlchemyError
 
 from producer import publish
 
@@ -21,6 +21,7 @@ logging.config.fileConfig(os.path.join('logging.conf'))
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', '')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['ADMIN_BASE_URL'] = os.getenv('ADMIN_BASE_URL', '')
 
 CORS(app)
 
@@ -57,19 +58,26 @@ def get_all():
     return jsonify(Product.query.all())
 
 
-@app.route('/api/products/<int:id>/like/', methods=['POST'])
-def like(id: int):
-    response = requests.get('http://localhost:8000/api/user')
-    data = response.json()
+@app.route('/api/products/<int:product_id>/like/', methods=['POST'])
+def like(product_id: int):
+    admin_base_url = app.config.get('ADMIN_BASE_URL')
+
+    if not admin_base_url:
+        abort(400, 'Request URL not configured')
 
     try:
-        product_user = ProductUser(user_id=data.get('id'), product_id=id)
+        response = requests.get(f'{admin_base_url}/api/user')
+        data = response.json()
+
+        product_user = ProductUser(user_id=data.get('pk'), product_id=product_id)
         db.session.add(product_user)
         db.session.commit()
 
-        publish('product_liked', dict(pk=id))
-    except Exception:
+        publish('product_liked', dict(pk=product_id))
+    except SQLAlchemyError:
         abort(400, 'You already liked this product')
+    except requests.exceptions.ConnectionError:
+        abort(503, 'Failed to request a user')
 
     return jsonify(dict(message='success'))
 
